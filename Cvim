@@ -1,0 +1,12 @@
+#!/bin/bash
+temp_files=$(mktemp)
+date > temp_files
+echo -e '/*******************************************************\n\t  File name : '$*.cpp > $*.cpp 
+echo -e '\tAuthor name : Omkar ' >> $*.cpp 
+echo -e '\t       Date :' >> $*.cpp $(cat temp_files)  >> $*.cpp 
+rm temp_files
+echo -e '********************************************************/' >> $*.cpp
+echo -e '\n#include <iostream>' >> $*.cpp
+echo -e 'using namespace std ;' >> $*.cpp
+echo -e '\nint main ( )\n{\n\treturn 0;\n}' >> $*.cpp
+vim $*.cpp

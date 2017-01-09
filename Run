@@ -1,0 +1,14 @@
+#!/bin/bash
+clear
+echo -e '\n-------Compiling' $*'---------->'
+g++ $*
+status=$?
+if [ $status -eq 0 ];then
+	clear
+	echo -e '\n<---------Compilation Succesfull--------->'
+	echo -e '<----------Running Code-------------------'
+	echo -e '\n'
+	./a.out
+	echo -e '\n'
+	echo -e '----------End of Code running------------>\n'
+fi
