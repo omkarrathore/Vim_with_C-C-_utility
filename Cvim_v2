@@ -1,0 +1,56 @@
+#!/bin/bash
+
+#Check for second argument to create file ( C/C++ ) with extension ( .c/.cpp/.h ) specifiy by second argument
+if [ "$2" != "" ] 
+    then 
+#****************
+        ti=$(date)
+        extn=$1
+        extn=${extn##*.}
+
+    #Check argument to create .c extension file
+        if [ $2 == '-c' ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $2 != 'c' ]             
+            then
+                echo -e '/*******************************************************\n\t  File name : '$1.c > $1.c 
+                echo -e '\tAuthor name : Omkar ' >> $1.c 
+                echo -e '\t       Date :' >> $1.c $ti  >> $1.c 
+                echo -e '********************************************************/' >> $1.c
+                echo -e '\n#include <stdio.h>' >> $1.c
+                echo -e '\nint main ( )\n{\n\treturn 0;\n}' >> $1.c
+                vim $1.c
+    #echo $1.h  ##For Testing only
+
+    #Check argument to create .cpp extension file
+       elif [ $2 == '-p' ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $2 != 'c' ] 
+            then
+                echo -e '/*******************************************************\n\t  File name : '$1.cpp > $1.cpp 
+                echo -e '\tAuthor name : Omkar ' >> $1.cpp 
+                echo -e '\t       Date :' >> $1.cpp $ti  >> $1.cpp 
+                echo -e '********************************************************/' >> $1.cpp
+                echo -e '\n#include <iostream>' >> $1.cpp
+                echo -e 'using namespace std ;' >> $1.cpp
+                echo -e '\nint main ( )\n{\n\treturn 0;\n}' >> $1.cpp
+                vim $1.cpp
+    #echo $1.h  ##For Testing only
+
+    #Check argument to create .h extension file
+        elif [ $2 == '-h' ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $2 != 'c' ]
+            then 
+                echo -e '/*******************************************************\n\t  File name : '$1.h > $1.h
+                echo -e '\tAuthor name : Omkar ' >> $1.h 
+                echo -e '\t       Date :' >> $1.h $ti  >> $1.h 
+                echo -e '********************************************************/' >> $1.h
+                echo -e '\n#endif' >> $1.h
+                vim $1.h
+    #echo $1.h  ##For Testing only
+
+    #If a file already exist with any extension (.c/.cpp/.h ) then open existed file
+        else
+                vim $1
+        fi
+#****************
+
+#If the second argument is not supplied then open make file with name specifiy by $1 
+else
+        vim $1
+fi
