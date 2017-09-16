@@ -1,0 +1,27 @@
+#!/bin/bash
+clear
+
+extn=$1
+#To find the extension of file
+extn=${extn##*.}
+
+echo -e '\n-------Compiling' $*'---------->'
+#Check for C/C++ file 
+if [ $extn == 'c' ]
+    then 
+        gcc $*
+else
+        g++ -std=c++11 $*
+fi
+
+status=$?
+if [ $status -eq 0 ]
+    then
+        clear
+        echo -e '\n<---------Compilation Succesfull--------->'
+        echo -e '<----------Running Code-------------------'
+        echo -e '\n'
+        ./a.out
+        echo -e '\n'
+        echo -e '----------End of Code running------------>\n'
+fi

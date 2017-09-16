@@ -1,0 +1,99 @@
+#!/bin/bash
+
+#To get help
+if [ $# -ne 0 ] 
+      then
+      	   if [ $1 == '-h' ] || [ $1 == '--help' ] || [ $1 == '-help' ] || [ $1 == '--h' ] 
+		then
+			echo -e "\nCommand usage : Cvim file_name [-option]"
+			echo -e "\n\toption : -cp/-h/sh/-c"
+			echo -e "\tUse -cp To create new xyz_file.cpp file"
+			echo -e "\tUse -c To create new xyz_file.c file"
+			echo -e "\tUse -h To create new xyz_file.h file"
+			echo -e "\tUse -sh To create new xyz_file(bash_script) file"
+			echo -e "\tTry and run 'Cvim hello -cp' "
+			echo -e "\n\tFor normal editing a file use --> 'Cvim file_name'"
+			exit
+			fi
+fi
+
+#Check for second argument to create file ( C/C++ ) with extension ( .c/.cpp/.h ) specifiy by second argument
+if [ "$2" != "" ] 
+    then 
+#****************
+	user=($USER)
+	user="$(echo "$user" | sed 's/.*/\u&/')"
+        ti=$(date)
+        extn=$1
+        extn=${extn##*.}
+	# for creating bash script
+	if [ $2 == '-sh' ] && [ ! -f "$1" ] && [ ! -x "$1" ] 
+	then
+		touch $1
+		chmod +x $1
+		echo "#!/bin/bash" >> $1
+                echo -e "\n#*******************************************************\n#\t  File name : $1" >> $1
+                echo -e '#\tAuthor name :' >> $1 $user >> $1
+                echo -e '#\t       Date :' >> $1 $ti  >> $1 
+                echo -e '#********************************************************' >> $1
+		vim $1
+    #Check argument to create .c extension file
+        elif [ $2 == '-c' ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $extn != 'c' ] && [ ! -f "$1.c" ]
+            then
+		touch $1.c
+		echo -e '/*******************************************************\n\t  File name : '$1.c > $1.c 
+		echo -e '\tAuthor name :' >> $1.c $user >> $1.c
+		echo -e '\t       Date :' >> $1.c $ti  >> $1.c 
+		echo -e '********************************************************/' >> $1.c
+		echo -e '\n#include <stdio.h>' >> $1.c
+		echo -e '#define endl printf("\\n")' >> $1.c
+		echo -e '\nint main ( )\n{\n\treturn 0;\n}' >> $1.c
+		vim $1.c
+    #echo $1.h  ##For Testing only
+
+    #Check argument to create .cpp extension file
+       elif [ $2 == '-cpp' ]  && [ ! -f "$1.cpp" ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $extn != 'c' ] 
+            then
+		touch $1.cpp
+                echo -e '/*******************************************************\n\t  File name : '$1.cpp > $1.cpp 
+                echo -e '\tAuthor name :' >> $1.cpp $user >> $1.cpp 
+                echo -e '\t       Date :' >> $1.cpp $ti  >> $1.cpp 
+                echo -e '********************************************************/' >> $1.cpp
+                echo -e '\n#include <iostream>' >> $1.cpp
+                echo -e 'using namespace std ;' >> $1.cpp
+                echo -e '\nint main ( )\n{\n\treturn 0;\n}' >> $1.cpp
+                vim $1.cpp
+    #echo $1.h  ##For Testing only
+
+    #Check argument to create .h extension file
+        elif [ $2 == '-h' ] && [ $extn != 'cpp' ] && [ $extn != 'h' ] && [ $extn != 'c' ] && [ ! -f "$1.h" ] 
+            then 
+		touch $1.h
+                echo -e '/*******************************************************\n\t  File name : '$1.h > $1.h
+                echo -e '\tAuthor name :' >> $1.h $user >> $1.h
+                echo -e '\t       Date :' >> $1.h $ti  >> $1.h 
+                echo -e '********************************************************/' >> $1.h
+                echo -e '\n#endif' >> $1.h
+                vim $1.h
+    #echo $1.h  ##For Testing only
+    #If a file already exist with any extension (.c/.cpp/.h ) then open existed file
+        else
+		echo -e "\t***************************************\n"
+		echo -e "\tFile is already exist with this name"
+		echo -e "\tOpening existing file"
+		echo -e "\n\t***************************************\n"
+		sleep 1.5
+		if [ $2 == '-sh' ] 
+			then
+			vim $1
+		else
+			et=$2
+			et=${et:1}
+			vim $1.$et
+			fi
+        fi
+#****************
+#If the second argument is not supplied then open make file with name specifiy by $1 
+else
+        vim $1
+fi
